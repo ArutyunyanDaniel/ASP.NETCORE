@@ -14,25 +14,30 @@ namespace Lesson
     {
         int x = 2;
         //добавление сервисов
+        IHostingEnvironment _env;
+        public Startup(IHostingEnvironment env)
+        {
+            _env = env;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
         }
         //метод определяет как запрос будет обрабатываться
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            int x = 2;
+            app.Use(async (context, next) =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                x = x * 2;      // 2 * 2 = 4
+                await next.Invoke();    // вызов app.Run
+                x = x * 2;      // 8 * 2 = 16
+                await context.Response.WriteAsync($"Result: {x}");
+            });
 
             app.Run(async (context) =>
             {
-                string host = context.Request.Host.Value;
-                string parh = context.Request.Path;
-                string querty = context.Request.QueryString.Value;
-                context.Response.ContentType = "text/html;charset=utf-8";
-                await context.Response.WriteAsync($"<h3>Хост: {host}</h3>"+
-                    $"<h3>Путь: {parh}</h3>"+ $"<h3>string: {querty}</h3>");
+                x = x * 2;  //  4 * 2 = 8
+                await Task.FromResult(0);
             });
         }
     }
