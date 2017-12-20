@@ -14,19 +14,7 @@ namespace Lesson
     {
         public static void Main(string[] args)
         {
-            //BuildWebHost(args).Run();
-            using (var host = WebHost.Start("http://localhost:8080", context => context.Response.WriteAsync("Hello loshara!")))
-            {
-                Console.WriteLine("Apii started!");
-                host.WaitForShutdown();
-            } 
-            //var host = new WebHostBuilder()
-            //    .UseKestrel()
-            //    .UseContentRoot(Directory.GetCurrentDirectory())
-            //    .UseIISIntegration()
-            //    .UseStartup<Startup>()
-            //    .Build();
-            //host.Run();
+            BuildWebHost(args).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

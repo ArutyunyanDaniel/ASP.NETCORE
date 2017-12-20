@@ -12,6 +12,7 @@ namespace Lesson
     //обработка запросов
     public class Startup
     {
+        int x = 2;
         //добавление сервисов
         public void ConfigureServices(IServiceCollection services)
         {
@@ -26,7 +27,12 @@ namespace Lesson
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                string host = context.Request.Host.Value;
+                string parh = context.Request.Path;
+                string querty = context.Request.QueryString.Value;
+                context.Response.ContentType = "text/html;charset=utf-8";
+                await context.Response.WriteAsync($"<h3>Хост: {host}</h3>"+
+                    $"<h3>Путь: {parh}</h3>"+ $"<h3>string: {querty}</h3>");
             });
         }
     }
